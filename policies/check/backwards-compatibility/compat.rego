@@ -18,6 +18,16 @@ registry_span_types := { span.type | some span in input.registry.spans }
 registry_attribute_group_ids := { group.id | some group in input.registry.attribute_groups }
 
 
+compatibility_policy_exceptions(signal) := {policy | some policy in signal.annotations.compatibility.policy_exceptions}
+
+removal_suppressed(signal_type, signal_name, exception_key) if {
+    collection := {"span": "spans", "metric": "metrics", "event": "events", "entity": "entities"}[signal_type]
+    some refinement in input.refinements[collection]
+    # V1 IDs can retain the signal prefix when converted to refinements.
+    refinement.id in {signal_name, sprintf("%s.%s", [signal_type, signal_name])}
+    compatibility_policy_exceptions(refinement)[exception_key]
+}
+
 # Rules we enforce:
 # - Attributes
 #   - [x] Attributes cannot be removed
@@ -279,9 +289,10 @@ deny contains finding if {
 
     # Enforce the policy
     not registry_metric_names[metric.name]
+    not removal_suppressed("metric", metric.name, "metric_removed")
     # Generate human readable error.
     finding := {
-        "id": "compatibility_metric_missing",
+        "id": "compatibility_metric_removed",
         "context": {},
         "message": sprintf("Metric '%s' no longer exists in semantic conventions", [metric.name]),
         "level": "violation",
@@ -304,7 +315,7 @@ deny contains finding if {
 
     # Generate human readable error.
     finding := {
-        "id": "compatibility_metric_missing",
+        "id": "compatibility_metric_changed_stability",
         "context": {},
         "message": sprintf("Metric '%s' cannot change from stable", [metric.name]),
         "level": "violation",
@@ -450,10 +461,11 @@ deny contains finding if {
 
     # Enforce the policy
     not registry_entity_types[entity.type]
+    not removal_suppressed("entity", entity.type, "entity_removed")
 
     # Generate human readable error.
     finding := {
-        "id": "compatibility_entity_missing",
+        "id": "compatibility_entity_removed",
         "context": {},
         "message": sprintf("Entity '%s' no longer exists in semantic conventions", [entity.type]),
         "level": "violation",
@@ -575,6 +587,7 @@ deny contains finding if {
     some event in data.registry.events
     # Enforce the policy
     not registry_event_names[event.name]
+    not removal_suppressed("event", event.name, "event_removed")
 
     # Generate human readable error.
     finding := {
@@ -659,10 +672,11 @@ deny contains finding if {
 
     # Enforce the policy
     not registry_span_types[span.type]
+    not removal_suppressed("span", span.type, "span_removed")
 
     # Generate human readable error.
     finding := {
-        "id": "compatibility_span_missing",
+        "id": "compatibility_span_removed",
         "context": {},
         "message": sprintf("Span '%s' no longer exists in semantic conventions", [span.type]),
         "level": "violation",
