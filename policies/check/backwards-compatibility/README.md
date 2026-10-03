@@ -31,17 +31,17 @@ span_refinements:
     annotations:
       compatibility:
         policy_exceptions:
-          - span_removed
+          - span_missing
 ```
 
 Use the finding ID without the `compatibility_` prefix:
 
 | Signal | Exception |
 | --- | --- |
-| Span | `span_removed` |
-| Metric | `metric_removed` |
-| Event | `event_removed` |
-| Entity | `entity_removed` |
+| Span | `span_missing` |
+| Metric | `metric_missing` |
+| Event | `event_missing` |
+| Entity | `entity_missing` |
 
 The refinement must have the same signal kind and match the former name or type.
 Its ID may include the kind prefix, such as `span.` or `metric.`.

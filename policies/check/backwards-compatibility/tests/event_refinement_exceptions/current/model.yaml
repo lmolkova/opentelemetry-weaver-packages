@@ -18,12 +18,12 @@ event_refinements:
     ref: base.event
     annotations:
       compatibility:
-        policy_exceptions: [event_removed]
+        policy_exceptions: [event_missing]
   - id: event.migrated.prefixed
     ref: base.event
     annotations:
       compatibility:
-        policy_exceptions: [event_removed]
+        policy_exceptions: [event_missing]
   - id: event.missing.unannotated
     ref: base.event
   - id: event.missing.wrong_key
@@ -35,12 +35,12 @@ event_refinements:
     ref: base.event
     annotations:
       stability:
-        policy_exceptions: [event_removed]
+        policy_exceptions: [event_missing]
   - id: event.unrelated
     ref: base.event
     annotations:
       compatibility:
-        policy_exceptions: [event_removed]
+        policy_exceptions: [event_missing]
   - id: event.missing.baseline_only
     ref: base.event
 
@@ -49,4 +49,4 @@ span_refinements:
     ref: base.span
     annotations:
       compatibility:
-        policy_exceptions: [event_removed]
+        policy_exceptions: [event_missing]

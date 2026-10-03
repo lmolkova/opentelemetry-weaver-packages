@@ -18,12 +18,12 @@ entity_refinements:
     ref: base.entity
     annotations:
       compatibility:
-        policy_exceptions: [entity_removed]
+        policy_exceptions: [entity_missing]
   - id: entity.migrated.prefixed
     ref: base.entity
     annotations:
       compatibility:
-        policy_exceptions: [entity_removed]
+        policy_exceptions: [entity_missing]
   - id: entity.missing.unannotated
     ref: base.entity
   - id: entity.missing.wrong_key
@@ -35,12 +35,12 @@ entity_refinements:
     ref: base.entity
     annotations:
       stability:
-        policy_exceptions: [entity_removed]
+        policy_exceptions: [entity_missing]
   - id: entity.unrelated
     ref: base.entity
     annotations:
       compatibility:
-        policy_exceptions: [entity_removed]
+        policy_exceptions: [entity_missing]
   - id: entity.missing.baseline_only
     ref: base.entity
 
@@ -49,4 +49,4 @@ span_refinements:
     ref: base.span
     annotations:
       compatibility:
-        policy_exceptions: [entity_removed]
+        policy_exceptions: [entity_missing]

@@ -24,7 +24,7 @@ entities:
     brief: A entity.
     annotations:
       compatibility:
-        policy_exceptions: [entity_removed]
+        policy_exceptions: [entity_missing]
   - type: missing.wrong_signal
     stability: development
     brief: A entity.

@@ -67,14 +67,14 @@
   },
   {
     "diagnostic": {
-      "message": "Policy violation: id=compatibility_entity_removed, context={}, message=Entity 'some.missing.entity' no longer exists in semantic conventions, level=Violation, signal_type=Some(\"entity\"), signal_name=Some(\"some.missing.entity\"), provenance: current"
+      "message": "Policy violation: id=compatibility_entity_missing, context={}, message=Entity 'some.missing.entity' no longer exists in semantic conventions, level=Violation, signal_type=Some(\"entity\"), signal_name=Some(\"some.missing.entity\"), provenance: current"
     },
     "error": {
       "provenance": "current",
       "type": "policy_violation",
       "violation": {
         "context": {},
-        "id": "compatibility_entity_removed",
+        "id": "compatibility_entity_missing",
         "level": "violation",
         "message": "Entity 'some.missing.entity' no longer exists in semantic conventions",
         "signal_name": "some.missing.entity",

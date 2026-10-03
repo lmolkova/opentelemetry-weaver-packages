@@ -45,4 +45,4 @@ spans:
     brief: A client operation.
     annotations:
       compatibility:
-        policy_exceptions: [span_removed]
+        policy_exceptions: [span_missing]

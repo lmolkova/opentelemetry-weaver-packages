@@ -289,10 +289,10 @@ deny contains finding if {
 
     # Enforce the policy
     not registry_metric_names[metric.name]
-    not removal_suppressed("metric", metric.name, "metric_removed")
+    not removal_suppressed("metric", metric.name, "metric_missing")
     # Generate human readable error.
     finding := {
-        "id": "compatibility_metric_removed",
+        "id": "compatibility_metric_missing",
         "context": {},
         "message": sprintf("Metric '%s' no longer exists in semantic conventions", [metric.name]),
         "level": "violation",
@@ -461,11 +461,11 @@ deny contains finding if {
 
     # Enforce the policy
     not registry_entity_types[entity.type]
-    not removal_suppressed("entity", entity.type, "entity_removed")
+    not removal_suppressed("entity", entity.type, "entity_missing")
 
     # Generate human readable error.
     finding := {
-        "id": "compatibility_entity_removed",
+        "id": "compatibility_entity_missing",
         "context": {},
         "message": sprintf("Entity '%s' no longer exists in semantic conventions", [entity.type]),
         "level": "violation",
@@ -587,11 +587,11 @@ deny contains finding if {
     some event in data.registry.events
     # Enforce the policy
     not registry_event_names[event.name]
-    not removal_suppressed("event", event.name, "event_removed")
+    not removal_suppressed("event", event.name, "event_missing")
 
     # Generate human readable error.
     finding := {
-        "id": "compatibility_event_removed",
+        "id": "compatibility_event_missing",
         "context": {},
         "message": sprintf("Event '%s' no longer exists in semantic conventions", [event.name]),
         "level": "violation",
@@ -672,11 +672,11 @@ deny contains finding if {
 
     # Enforce the policy
     not registry_span_types[span.type]
-    not removal_suppressed("span", span.type, "span_removed")
+    not removal_suppressed("span", span.type, "span_missing")
 
     # Generate human readable error.
     finding := {
-        "id": "compatibility_span_removed",
+        "id": "compatibility_span_missing",
         "context": {},
         "message": sprintf("Span '%s' no longer exists in semantic conventions", [span.type]),
         "level": "violation",

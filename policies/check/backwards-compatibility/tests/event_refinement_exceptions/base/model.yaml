@@ -24,7 +24,7 @@ events:
     brief: A event.
     annotations:
       compatibility:
-        policy_exceptions: [event_removed]
+        policy_exceptions: [event_missing]
   - name: missing.wrong_signal
     stability: development
     brief: A event.

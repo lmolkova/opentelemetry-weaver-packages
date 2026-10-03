@@ -20,12 +20,12 @@ metric_refinements:
     ref: base.metric
     annotations:
       compatibility:
-        policy_exceptions: [metric_removed]
+        policy_exceptions: [metric_missing]
   - id: metric.migrated.prefixed
     ref: base.metric
     annotations:
       compatibility:
-        policy_exceptions: [metric_removed]
+        policy_exceptions: [metric_missing]
   - id: metric.missing.unannotated
     ref: base.metric
   - id: metric.missing.wrong_key
@@ -37,12 +37,12 @@ metric_refinements:
     ref: base.metric
     annotations:
       stability:
-        policy_exceptions: [metric_removed]
+        policy_exceptions: [metric_missing]
   - id: metric.unrelated
     ref: base.metric
     annotations:
       compatibility:
-        policy_exceptions: [metric_removed]
+        policy_exceptions: [metric_missing]
   - id: metric.missing.baseline_only
     ref: base.metric
 
@@ -51,4 +51,4 @@ span_refinements:
     ref: base.span
     annotations:
       compatibility:
-        policy_exceptions: [metric_removed]
+        policy_exceptions: [metric_missing]

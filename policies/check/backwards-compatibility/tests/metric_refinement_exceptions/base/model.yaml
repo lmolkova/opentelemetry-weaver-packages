@@ -38,7 +38,7 @@ metrics:
     unit: '{operation}'
     annotations:
       compatibility:
-        policy_exceptions: [metric_removed]
+        policy_exceptions: [metric_missing]
   - name: missing.wrong_signal
     stability: development
     brief: A metric.

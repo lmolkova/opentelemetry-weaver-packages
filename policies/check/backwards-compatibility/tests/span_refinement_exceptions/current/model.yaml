@@ -13,12 +13,12 @@ span_refinements:
     ref: base.client
     annotations:
       compatibility:
-        policy_exceptions: [span_removed]
+        policy_exceptions: [span_missing]
   - id: span.migrated.prefixed
     ref: base.client
     annotations:
       compatibility:
-        policy_exceptions: [span_removed]
+        policy_exceptions: [span_missing]
   - id: span.missing.unannotated
     ref: base.client
   - id: span.missing.wrong_key
@@ -30,11 +30,11 @@ span_refinements:
     ref: base.client
     annotations:
       stability:
-        policy_exceptions: [span_removed]
+        policy_exceptions: [span_missing]
   - id: span.unrelated
     ref: base.client
     annotations:
       compatibility:
-        policy_exceptions: [span_removed]
+        policy_exceptions: [span_missing]
   - id: span.missing.baseline_only
     ref: base.client
