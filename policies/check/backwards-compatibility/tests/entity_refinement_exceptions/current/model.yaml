@@ -1,9 +1,17 @@
 file_format: definition/2
 
+attributes:
+  - key: entity.id
+    type: string
+    stability: development
+    brief: Entity identifier.
+
 entities:
   - type: base.entity
     stability: development
-    brief: A entity.
+    brief: An entity.
+    identity:
+      - ref: entity.id
 
 spans:
   - type: base.span
