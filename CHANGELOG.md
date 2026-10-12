@@ -16,10 +16,6 @@ change. See [CONTRIBUTING.md](CONTRIBUTING.md#changelog) for details.
 
 ### Policies
 
-- `check/naming_conventions`: Adds `_ref` attribute checks (type `string`,
-  counterpart must exist) and forbids attributes annotated with
-  `value.unbounded_size: true` from being `required` or used on
-  metrics or as entity identity.
 - `check/backwards-compatibility`: Checks a registry against a baseline registry
   for breaking changes.
 - `check/naming_conventions`: Enforces OpenTelemetry semantic convention naming
