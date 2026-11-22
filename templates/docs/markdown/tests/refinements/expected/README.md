@@ -15,4 +15,5 @@ in a namespace are also available on the namespace page.
 
 Currently, the following namespaces exist:
 
-- [Myapp](myapp/README.md)
+- [Acme](/acme/README.md)
+- [Myapp](/myapp/README.md)

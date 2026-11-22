@@ -19,55 +19,105 @@ attributes:
     stability: development
     brief: Deployment environment of the service.
 
+metrics:
+  # A local metric refined from another namespace: its metrics.md section lists
+  # the refinements, which live on acme/metric-refinements.md.
+  - name: myapp.request.count
+    instrument: counter
+    unit: "{request}"
+    stability: stable
+    brief: Number of requests handled.
+    requirement_level: recommended
+    attributes:
+      - ref: myapp.region
+        requirement_level: recommended
+
 metric_refinements:
-  - id: refinement.myapp.http.request.duration
+  - id: acme.request.count
+    ref: myapp.request.count
+    stability: stable
+    brief: Acme-specific request count.
+    attributes:
+      - ref: myapp.region
+        requirement_level: required
+  - id: acme.request.count.batch
+    ref: myapp.request.count
+    stability: development
+    brief: Acme batch request count.
+    attributes:
+      - ref: myapp.env
+        requirement_level: recommended
+  - id: acme.request.count.old
+    ref: myapp.request.count
+    stability: stable
+    deprecated:
+      reason: obsoleted
+      note: Use `acme.request.count`.
+    brief: Obsolete Acme request count.
+  - id: myapp.http.request.duration
     ref: http.server.request.duration
     stability: stable
     brief: Refines http.server.request.duration for myapp services.
     attributes:
       - ref: myapp.region
         requirement_level: required
-  - id: refinement.myapp.http.legacy.duration
+  - id: myapp.http.legacy.duration
     ref: http.server.request.duration
     stability: development
     brief: Development-only refinement, kept for internal tracing.
     attributes:
       - ref: myapp.region
         requirement_level: recommended
-  - id: refinement.myapp.http.old.duration
+  - id: myapp.http.old.duration
     ref: http.server.request.duration
     stability: stable
     deprecated:
       reason: renamed
-      renamed_to: refinement.myapp.http.request.duration
-      note: Renamed to `refinement.myapp.http.request.duration`.
+      renamed_to: myapp.http.request.duration
+      note: Renamed to `myapp.http.request.duration`.
     brief: Obsolete refinement for http.server.request.duration.
     attributes:
       - ref: myapp.region
         requirement_level: recommended
 
+entities:
+  # A local entity refined from another namespace: its entities.md section lists
+  # the refinement, which lives on acme/entity-refinements.md.
+  - type: myapp.service
+    stability: stable
+    brief: A deployed myapp service.
+    identity:
+      - ref: myapp.region
+
 entity_refinements:
-  - id: refinement.myapp.host
+  - id: acme.service
+    ref: myapp.service
+    stability: stable
+    brief: Acme-specific myapp service.
+    description:
+      - ref: myapp.env
+        requirement_level: recommended
+  - id: myapp.host
     ref: host
     stability: stable
     brief: Refines the host entity for myapp deployments.
     description:
       - ref: myapp.region
         requirement_level: required
-  - id: refinement.myapp.host.dev
+  - id: myapp.host.dev
     ref: host
     stability: development
     brief: Development-tier host refinement with environment context.
     description:
       - ref: myapp.env
         requirement_level: recommended
-  - id: refinement.myapp.host.old
+  - id: myapp.host.old
     ref: host
     stability: stable
     deprecated:
       reason: renamed
-      renamed_to: refinement.myapp.host
-      note: Renamed to `refinement.myapp.host`.
+      renamed_to: myapp.host
+      note: Renamed to `myapp.host`.
     brief: Obsolete host refinement.
     description:
       - ref: myapp.region

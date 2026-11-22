@@ -3,21 +3,35 @@
 
 # Myapp
 
+- [Entities](#entities)
 - [Entity refinements](#entity-refinements)
+- [Metrics](#metrics)
 - [Metric refinements](#metric-refinements)
 - [Attributes](#attributes)
 
+## Entities
+
+| Type | Stability | Description |
+| --- | --- | --- |
+| [`myapp.service`](/myapp/entities.md#myappservice) | ![Stable](https://img.shields.io/badge/-stable-lightgreen) | A deployed myapp service. |
+
 ## Entity refinements
 
-| Id | Stability | Description |
+| Type | Stability | Description |
 | --- | --- | --- |
-| [`refinement.myapp.host`](entity-refinements.md#refinementmyapphost) | ![Stable](https://img.shields.io/badge/-stable-lightgreen) | Refines the host entity for myapp deployments. |
+| [`host`](/myapp/entity-refinements.md#host-refinement) | ![Stable](https://img.shields.io/badge/-stable-lightgreen) | Refines the host entity for myapp deployments. |
+
+## Metrics
+
+| Name | Stability | Description |
+| --- | --- | --- |
+| [`myapp.request.count`](/myapp/metrics.md#myapprequestcount) | ![Stable](https://img.shields.io/badge/-stable-lightgreen) | Number of requests handled. |
 
 ## Metric refinements
 
-| Id | Stability | Description |
+| Name | Stability | Description |
 | --- | --- | --- |
-| [`refinement.myapp.http.request.duration`](metric-refinements.md#refinementmyapphttprequestduration) | ![Stable](https://img.shields.io/badge/-stable-lightgreen) | Refines http.server.request.duration for myapp services. |
+| [`http.server.request.duration`](/myapp/metric-refinements.md#httpserverrequestduration-refinement) | ![Stable](https://img.shields.io/badge/-stable-lightgreen) | Refines http.server.request.duration for myapp services. |
 
 ## Attributes
 

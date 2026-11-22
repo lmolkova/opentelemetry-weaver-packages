@@ -4,10 +4,13 @@
 
    `id_attr` is the field holding the signal id (`type` for spans and entities,
    `name` for metrics and events) and doubles as the column header. `page_url` is
-   empty when the table sits on the same page as the sections it links to. -#}
-{% macro render(signals, id_attr, page_url="") %}
+   empty when the table sits on the same page as the sections it links to.
+   `anchor_suffix` matches extra heading text (e.g. ` (refinement)` -> `-refinement`).
+   Repeated headings get `-1`, `-2`, ... anchors from the renderer, so repeated ids
+   do too; `prior` holds signals whose headings come earlier on the target page. -#}
+{% macro render(signals, id_attr, page_url="", anchor_suffix="", prior=[]) %}
 | {{ id_attr | capitalize }} | Stability | Description |
 | --- | --- | --- |
-{% for signal in signals | sort(attribute=id_attr) %}| [`{{ signal[id_attr] }}`]({{ page_url }}#{{ links.signal_anchor(signal[id_attr]) }}) | {{ stability.badge(signal, include_note=false) | trim }} | {{ stability.description(signal) }} |
+{% set sorted = signals | sort(attribute=id_attr) %}{% for signal in sorted %}{% set dup = (prior + sorted[:loop.index0]) | selectattr(id_attr, "equalto", signal[id_attr]) | list | length %}| [`{{ signal[id_attr] }}`]({{ page_url }}#{{ links.signal_anchor(signal[id_attr]) }}{{ anchor_suffix }}{{ "-" ~ dup if dup }}) | {{ stability.badge(signal, include_note=false) | trim }} | {{ stability.description(signal) }} |
 {% endfor %}
 {%- endmacro %}

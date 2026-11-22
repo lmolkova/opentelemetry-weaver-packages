@@ -3,26 +3,40 @@
 
 # Myapp
 
+- [Entities](#entities)
 - [Entity refinements](#entity-refinements)
+- [Metrics](#metrics)
 - [Metric refinements](#metric-refinements)
 - [Attributes](#attributes)
 - [Deprecated](#deprecated)
   - [Entity refinements](#entity-refinements-1)
   - [Metric refinements](#metric-refinements-1)
 
+## Entities
+
+| Type | Stability | Description |
+| --- | --- | --- |
+| [`myapp.service`](/myapp/entities.md#myappservice) | ![Stable](https://img.shields.io/badge/-stable-lightgreen) | A deployed myapp service. |
+
 ## Entity refinements
 
-| Id | Stability | Description |
+| Type | Stability | Description |
 | --- | --- | --- |
-| [`refinement.myapp.host`](entity-refinements.md#refinementmyapphost) | ![Stable](https://img.shields.io/badge/-stable-lightgreen) | Refines the host entity for myapp deployments. |
-| [`refinement.myapp.host.dev`](entity-refinements.md#refinementmyapphostdev) | ![Development](https://img.shields.io/badge/-development-blue) | Development-tier host refinement with environment context. |
+| [`host`](/myapp/entity-refinements.md#host-refinement) | ![Stable](https://img.shields.io/badge/-stable-lightgreen) | Refines the host entity for myapp deployments. |
+| [`host`](/myapp/entity-refinements.md#host-refinement-1) | ![Development](https://img.shields.io/badge/-development-blue) | Development-tier host refinement with environment context. |
+
+## Metrics
+
+| Name | Stability | Description |
+| --- | --- | --- |
+| [`myapp.request.count`](/myapp/metrics.md#myapprequestcount) | ![Stable](https://img.shields.io/badge/-stable-lightgreen) | Number of requests handled. |
 
 ## Metric refinements
 
-| Id | Stability | Description |
+| Name | Stability | Description |
 | --- | --- | --- |
-| [`refinement.myapp.http.legacy.duration`](metric-refinements.md#refinementmyapphttplegacyduration) | ![Development](https://img.shields.io/badge/-development-blue) | Development-only refinement, kept for internal tracing. |
-| [`refinement.myapp.http.request.duration`](metric-refinements.md#refinementmyapphttprequestduration) | ![Stable](https://img.shields.io/badge/-stable-lightgreen) | Refines http.server.request.duration for myapp services. |
+| [`http.server.request.duration`](/myapp/metric-refinements.md#httpserverrequestduration-refinement) | ![Development](https://img.shields.io/badge/-development-blue) | Development-only refinement, kept for internal tracing. |
+| [`http.server.request.duration`](/myapp/metric-refinements.md#httpserverrequestduration-refinement-1) | ![Stable](https://img.shields.io/badge/-stable-lightgreen) | Refines http.server.request.duration for myapp services. |
 
 ## Attributes
 
@@ -46,12 +60,12 @@ Attributes defined in the `myapp` namespace. Application developers are encourag
 
 ### Entity refinements
 
-| Id | Stability | Description |
+| Type | Stability | Description |
 | --- | --- | --- |
-| [`refinement.myapp.host.old`](entity-refinements.md#refinementmyapphostold) | ![Deprecated](https://img.shields.io/badge/-deprecated-red) ![Stable](https://img.shields.io/badge/-stable-lightgreen) | Obsolete host refinement.<br>**Renamed:** Renamed to `refinement.myapp.host`. |
+| [`host`](/myapp/entity-refinements.md#host-refinement-2) | ![Deprecated](https://img.shields.io/badge/-deprecated-red) ![Stable](https://img.shields.io/badge/-stable-lightgreen) | Obsolete host refinement.<br>**Renamed:** Renamed to `myapp.host`. |
 
 ### Metric refinements
 
-| Id | Stability | Description |
+| Name | Stability | Description |
 | --- | --- | --- |
-| [`refinement.myapp.http.old.duration`](metric-refinements.md#refinementmyapphttpoldduration) | ![Deprecated](https://img.shields.io/badge/-deprecated-red) ![Stable](https://img.shields.io/badge/-stable-lightgreen) | Obsolete refinement for http.server.request.duration.<br>**Renamed:** Renamed to `refinement.myapp.http.request.duration`. |
+| [`http.server.request.duration`](/myapp/metric-refinements.md#httpserverrequestduration-refinement-2) | ![Deprecated](https://img.shields.io/badge/-deprecated-red) ![Stable](https://img.shields.io/badge/-stable-lightgreen) | Obsolete refinement for http.server.request.duration.<br>**Renamed:** Renamed to `myapp.http.request.duration`. |

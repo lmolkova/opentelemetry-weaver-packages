@@ -49,12 +49,12 @@
 {%- endmacro %}
 
 {#- Render a single row on the entity table. -#}
-{% macro attribute_row(attribute, notes, role) -%}
-| {{ role_tag(role) | trim }} | {{ attrs.name_with_link(attribute) }} | {{ stability.badge(attribute, include_note=false) | trim }} | {{ requirement.render({"level": ("required" if role == "identity" else attribute.requirement_level), "name": attribute.key}, notes) | trim }} | {{ attrs.type(attribute) }} | {{ attrs.description(attribute, notes) }} | {{ examples.format(attribute) }}|
+{% macro attribute_row(attribute, notes, role, e) -%}
+| {{ role_tag(role) | trim }} | {% if attribute.key in (e._added | default([], true)) %}![Added](https://img.shields.io/badge/-added-teal) {% elif attribute.key in (e._changed | default([], true)) %}![Changed](https://img.shields.io/badge/-changed-orange) {% endif %}{{ attrs.name_with_link(attribute) }} | {{ stability.badge(attribute, include_note=false) | trim }} | {{ requirement.render({"level": ("required" if role == "identity" else attribute.requirement_level), "name": attribute.key}, notes) | trim }} | {{ attrs.type(attribute) }} | {{ attrs.description(attribute, notes) }} | {{ examples.format(attribute) }}|
 {%- endmacro %}
 
 {#- Render attribute tables for entities. -#}
-{% macro attribute_table(attributes, notes, role) %}{% for attribute in attributes | attribute_sort %}{{ attribute_row(attribute, notes, role) }}
+{% macro attribute_table(attributes, notes, role, e) %}{% for attribute in attributes | attribute_sort %}{{ attribute_row(attribute, notes, role, e) }}
 {% endfor %}
 {%- endmacro %}
 
@@ -64,8 +64,8 @@
 
 | Role | Key | Stability | [Requirement Level]({{ links.requirement_level_url() }}) | Value Type | Description | Example Values |
 | --- | --- | --- | --- | --- | --- | --- |{%- if id_attrs | length > 0 %}
-{{ attribute_table(id_attrs, notes, "identity") | trim }}{% endif %}{%- if desc_attrs | length > 0 %}
-{{ attribute_table(desc_attrs, notes, "description") | trim }}{% endif %}
+{{ attribute_table(id_attrs, notes, "identity", e) | trim }}{% endif %}{%- if desc_attrs | length > 0 %}
+{{ attribute_table(desc_attrs, notes, "description", e) | trim }}{% endif %}
 {%- set notes_out = notes.render() | trim %}{% if notes_out %}
 
 {{ notes_out }}

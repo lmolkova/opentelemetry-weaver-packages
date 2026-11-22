@@ -3,20 +3,14 @@
 
 # Myapp entity refinements
 
-Entity refinements specialize upstream OpenTelemetry entities with additional
-identity and description attributes specific to the
-Myapp domain.
-
-| Refinement ID | Refined Entity Type | Description |
+| Type | Stability | Description |
 | --- | --- | --- |
-| `refinement.myapp.host` | `host` | Refines the host entity for myapp deployments. |
-| `refinement.myapp.host.dev` | `host` | Development-tier host refinement with environment context. |
-| `refinement.myapp.host.old` | `host` | Obsolete host refinement. |
+| [`host`](#host-refinement) | ![Stable](https://img.shields.io/badge/-stable-lightgreen) | Refines the host entity for myapp deployments. |
+| [`host`](#host-refinement-1) | ![Development](https://img.shields.io/badge/-development-blue) | Development-tier host refinement with environment context. |
 
+## `host` (refinement)
 
-## `refinement.myapp.host`
-
-Refines upstream entity: `host`
+**Refines:** `host`
 
 **Status:** ![Stable](https://img.shields.io/badge/-stable-lightgreen)
 
@@ -33,9 +27,9 @@ Refines the host entity for myapp deployments.
 | Identity | `host.name` | ![Stable](https://img.shields.io/badge/-stable-lightgreen) | `Required` | string | Name identifying the host machine. | `my-host` |
 | Description | [`myapp.region`](/myapp/README.md#myapp-region) | ![Stable](https://img.shields.io/badge/-stable-lightgreen) | `Required` | string | Cloud region the service is deployed in. | `us-east-1` |
 
-## `refinement.myapp.host.dev`
+## `host` (refinement)
 
-Refines upstream entity: `host`
+**Refines:** `host`
 
 **Status:** ![Development](https://img.shields.io/badge/-development-blue)
 
@@ -61,11 +55,17 @@ Development-tier host refinement with environment context.
 | `production` | Production environment. | ![Stable](https://img.shields.io/badge/-stable-lightgreen) |
 | `staging` | Staging environment. | ![Stable](https://img.shields.io/badge/-stable-lightgreen) |
 
-## `refinement.myapp.host.old`
+## Deprecated
 
-Refines upstream entity: `host`
+| Type | Stability | Description |
+| --- | --- | --- |
+| [`host`](#host-refinement-2) | ![Deprecated](https://img.shields.io/badge/-deprecated-red) ![Stable](https://img.shields.io/badge/-stable-lightgreen) | Obsolete host refinement.<br>**Renamed:** Renamed to `myapp.host`. |
 
-**Status:** ![Deprecated](https://img.shields.io/badge/-deprecated-red) ![Stable](https://img.shields.io/badge/-stable-lightgreen)<br>**Renamed:** Renamed to `refinement.myapp.host`.
+### `host` (refinement)
+
+**Refines:** `host`
+
+**Status:** ![Deprecated](https://img.shields.io/badge/-deprecated-red) ![Stable](https://img.shields.io/badge/-stable-lightgreen)<br>**Renamed:** Renamed to `myapp.host`.
 
 Obsolete host refinement.
 

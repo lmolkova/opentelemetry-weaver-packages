@@ -10,12 +10,19 @@
 {# v2 attribute_table: input is a list of attribute objects with `key`, `brief`,
    `requirement_level`, `provenance`, etc. directly inlined. Provenance is null
    for imported attributes; name_with_link reads it to pick the right link. #}
-{% macro generate(attributes) -%}
+{#- `section` is the definition the table belongs to. Keys in its `_added` /
+   `_changed` (refinements only) get a badge before the key, in colors distinct
+   from the stability badges. -#}
+{% macro mark(key, section) -%}
+{%- if section and key in (section._added | default([], true)) %}![Added](https://img.shields.io/badge/-added-teal) {% elif section and key in (section._changed | default([], true)) %}![Changed](https://img.shields.io/badge/-changed-orange) {% endif -%}
+{%- endmacro %}
+
+{% macro generate(attributes, section=none) -%}
 {%- if attributes | length > 0 -%}
 **Attributes:**
 
 | Key | Stability | [Requirement Level]({{ links.requirement_level_url() }}) | Value Type | Description | Example Values |
 | --- | --- | --- | --- | --- | --- |
-{% for attribute in attributes | attribute_sort %}| {{ attrs.name_with_link(attribute) }} | {{ stability.badge(attribute, include_note=false) | trim }} | {{ requirement.render({"level": attribute.requirement_level, "name": attribute.key}, notes) | trim }} | {{ attrs.type(attribute) }} | {{ attrs.description(attribute, notes) }} | {{ examples.format(attribute) }}|
+{% for attribute in attributes | attribute_sort %}| {{ mark(attribute.key, section) }}{{ attrs.name_with_link(attribute) }} | {{ stability.badge(attribute, include_note=false) | trim }} | {{ requirement.render({"level": attribute.requirement_level, "name": attribute.key}, notes) | trim }} | {{ attrs.type(attribute) }} | {{ attrs.description(attribute, notes) }} | {{ examples.format(attribute) }}|
 {% endfor %}{{ notes.render() }}{{ sampling.snippet(attributes) }}{{ enums.tables(attributes | selectattr("type", "mapping") | list, notes) }}
 {%- endif %}{% endmacro %}

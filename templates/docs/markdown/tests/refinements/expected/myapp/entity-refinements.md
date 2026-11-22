@@ -3,19 +3,14 @@
 
 # Myapp entity refinements
 
-Entity refinements specialize upstream OpenTelemetry entities with additional
-identity and description attributes specific to the
-Myapp domain.
-
-| Refinement ID | Refined Entity Type | Description |
+| Type | Stability | Description |
 | --- | --- | --- |
-| `refinement.myapp.host` | `host` | Refines the host entity for myapp deployments. |
-| `refinement.myapp.host.dev` | `host` | Development-tier host refinement with environment context. |
+| [`host`](#host-refinement) | ![Stable](https://img.shields.io/badge/-stable-lightgreen) | Refines the host entity for myapp deployments. |
+| [`host`](#host-refinement-1) | ![Development](https://img.shields.io/badge/-development-blue) | Development-tier host refinement with environment context. |
 
+## `host` (refinement)
 
-## `refinement.myapp.host`
-
-Refines upstream entity: `host`
+**Refines:** `host`
 
 **Status:** ![Stable](https://img.shields.io/badge/-stable-lightgreen)
 
@@ -32,9 +27,9 @@ Refines the host entity for myapp deployments.
 | Identity | [`host.name`](https://upstream.example/docs/attributes/host.md) | ![Stable](https://img.shields.io/badge/-stable-lightgreen) | `Required` | string | Name identifying the host machine. | `my-host` |
 | Description | [`myapp.region`](/myapp/README.md#myapp-region) | ![Stable](https://img.shields.io/badge/-stable-lightgreen) | `Required` | string | Cloud region the service is deployed in. | `us-east-1` |
 
-## `refinement.myapp.host.dev`
+## `host` (refinement)
 
-Refines upstream entity: `host`
+**Refines:** `host`
 
 **Status:** ![Development](https://img.shields.io/badge/-development-blue)
 

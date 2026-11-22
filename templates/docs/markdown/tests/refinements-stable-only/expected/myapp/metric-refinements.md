@@ -3,18 +3,13 @@
 
 # Myapp metric refinements
 
-Metric refinements extend upstream OpenTelemetry metrics with additional
-entity associations and attributes specific to the
-Myapp domain.
+| Name | Stability | Description |
+| --- | --- | --- |
+| [`http.server.request.duration`](#httpserverrequestduration-refinement) | ![Stable](https://img.shields.io/badge/-stable-lightgreen) | Refines http.server.request.duration for myapp services. |
 
-| Upstream Metric | Refinement ID | Entity Associations | Description |
-| --- | --- | --- | --- |
-| `http.server.request.duration` | `refinement.myapp.http.request.duration` |  | Refines http.server.request.duration for myapp services. |
+## `http.server.request.duration` (refinement)
 
-
-## `refinement.myapp.http.request.duration`
-
-Refines upstream metric: `http.server.request.duration`
+**Refines:** `http.server.request.duration`
 
 | Name | Instrument Type | Unit (UCUM) | Description | Stability | Entity Associations |
 | -------- | --------------- | ----------- | -------------- | --------- | ------ |

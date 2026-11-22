@@ -3,20 +3,14 @@
 
 # Myapp metric refinements
 
-Metric refinements extend upstream OpenTelemetry metrics with additional
-entity associations and attributes specific to the
-Myapp domain.
+| Name | Stability | Description |
+| --- | --- | --- |
+| [`http.server.request.duration`](#httpserverrequestduration-refinement) | ![Development](https://img.shields.io/badge/-development-blue) | Development-only refinement, kept for internal tracing. |
+| [`http.server.request.duration`](#httpserverrequestduration-refinement-1) | ![Stable](https://img.shields.io/badge/-stable-lightgreen) | Refines http.server.request.duration for myapp services. |
 
-| Upstream Metric | Refinement ID | Entity Associations | Description |
-| --- | --- | --- | --- |
-| `http.server.request.duration` | `refinement.myapp.http.legacy.duration` |  | Development-only refinement, kept for internal tracing. |
-| `http.server.request.duration` | `refinement.myapp.http.old.duration` |  | Obsolete refinement for http.server.request.duration. |
-| `http.server.request.duration` | `refinement.myapp.http.request.duration` |  | Refines http.server.request.duration for myapp services. |
+## `http.server.request.duration` (refinement)
 
-
-## `refinement.myapp.http.legacy.duration`
-
-Refines upstream metric: `http.server.request.duration`
+**Refines:** `http.server.request.duration`
 
 | Name | Instrument Type | Unit (UCUM) | Description | Stability | Entity Associations |
 | -------- | --------------- | ----------- | -------------- | --------- | ------ |
@@ -30,25 +24,9 @@ Refines upstream metric: `http.server.request.duration`
 | --- | --- | --- | --- | --- | --- |
 | [`myapp.region`](/myapp/README.md#myapp-region) | ![Stable](https://img.shields.io/badge/-stable-lightgreen) | `Recommended` | string | Cloud region the service is deployed in. | `us-east-1` |
 
-## `refinement.myapp.http.old.duration`
+## `http.server.request.duration` (refinement)
 
-Refines upstream metric: `http.server.request.duration`
-
-| Name | Instrument Type | Unit (UCUM) | Description | Stability | Entity Associations |
-| -------- | --------------- | ----------- | -------------- | --------- | ------ |
-| `http.server.request.duration` | Histogram | `s` | Obsolete refinement for http.server.request.duration. | ![Deprecated](https://img.shields.io/badge/-deprecated-red) ![Stable](https://img.shields.io/badge/-stable-lightgreen)<br>**Renamed:** Renamed to `refinement.myapp.http.request.duration`. | |
-
-**Requirement Level:** `Recommended`
-
-**Attributes:**
-
-| Key | Stability | [Requirement Level](https://opentelemetry.io/docs/specs/semconv/general/attribute-requirement-level/) | Value Type | Description | Example Values |
-| --- | --- | --- | --- | --- | --- |
-| [`myapp.region`](/myapp/README.md#myapp-region) | ![Stable](https://img.shields.io/badge/-stable-lightgreen) | `Recommended` | string | Cloud region the service is deployed in. | `us-east-1` |
-
-## `refinement.myapp.http.request.duration`
-
-Refines upstream metric: `http.server.request.duration`
+**Refines:** `http.server.request.duration`
 
 | Name | Instrument Type | Unit (UCUM) | Description | Stability | Entity Associations |
 | -------- | --------------- | ----------- | -------------- | --------- | ------ |
@@ -61,3 +39,25 @@ Refines upstream metric: `http.server.request.duration`
 | Key | Stability | [Requirement Level](https://opentelemetry.io/docs/specs/semconv/general/attribute-requirement-level/) | Value Type | Description | Example Values |
 | --- | --- | --- | --- | --- | --- |
 | [`myapp.region`](/myapp/README.md#myapp-region) | ![Stable](https://img.shields.io/badge/-stable-lightgreen) | `Required` | string | Cloud region the service is deployed in. | `us-east-1` |
+
+## Deprecated
+
+| Name | Stability | Description |
+| --- | --- | --- |
+| [`http.server.request.duration`](#httpserverrequestduration-refinement-2) | ![Deprecated](https://img.shields.io/badge/-deprecated-red) ![Stable](https://img.shields.io/badge/-stable-lightgreen) | Obsolete refinement for http.server.request.duration.<br>**Renamed:** Renamed to `myapp.http.request.duration`. |
+
+### `http.server.request.duration` (refinement)
+
+**Refines:** `http.server.request.duration`
+
+| Name | Instrument Type | Unit (UCUM) | Description | Stability | Entity Associations |
+| -------- | --------------- | ----------- | -------------- | --------- | ------ |
+| `http.server.request.duration` | Histogram | `s` | Obsolete refinement for http.server.request.duration. | ![Deprecated](https://img.shields.io/badge/-deprecated-red) ![Stable](https://img.shields.io/badge/-stable-lightgreen)<br>**Renamed:** Renamed to `myapp.http.request.duration`. | |
+
+**Requirement Level:** `Recommended`
+
+**Attributes:**
+
+| Key | Stability | [Requirement Level](https://opentelemetry.io/docs/specs/semconv/general/attribute-requirement-level/) | Value Type | Description | Example Values |
+| --- | --- | --- | --- | --- | --- |
+| [`myapp.region`](/myapp/README.md#myapp-region) | ![Stable](https://img.shields.io/badge/-stable-lightgreen) | `Recommended` | string | Cloud region the service is deployed in. | `us-east-1` |

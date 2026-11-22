@@ -2,10 +2,11 @@
 {%- import 'entity_macros.j2' as entity -%}
 {%- import 'namespace_page.j2' as page -%}
 {%- import 'titles.j2' as titles -%}
+{%- import 'links.j2' as links -%}
 {%- macro section(e, heading) %}
 {{ heading }} {{ titles.signal_heading(e.type) }}
 
-{{ entity.header(e) | trim }}
+{{ entity.header(e) | trim }}{{ links.known_refinements(e.refinements, e.type, "entity-refinements.md") }}
 
 {{ entity.all_attribute_table(e) | trim }}
 {% endmacro -%}

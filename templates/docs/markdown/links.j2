@@ -75,3 +75,33 @@
 {{ params.registry_base_url }}/{{ ns }}/README.md#{{ attribute.key | kebab_case }}
 {%- endif -%}
 {%- endmacro %}
+
+{# --- Known refinements of a signal ---
+   Links each refinement to its `{ns}/{page}` section, titled `<id> (refinement)`.
+   `_idx` is the refinement's position among same-titled headings on that page,
+   which the renderer turns into a `-N` anchor suffix. #}
+{% macro known_refinements(refinements, id, page) -%}
+{%- if refinements %}
+
+**Known refinements:**
+{% for r in refinements %}
+- [{{ titles.namespace(r._ns) }}]({{ registry_page_url(r._ns, page) | trim }}#{{ signal_anchor(id) }}-refinement{{ "-" ~ r._idx if r._idx }})
+{%- endfor %}
+{%- endif %}
+{%- endmacro %}
+
+{# --- What a refinement changes ---
+   Links the refined signal when this registry defines it (`_base_local`), then
+   lists the attributes the refinement adds or whose requirement level it changes.
+   Those rows are also marked in the attribute table. #}
+{% macro refinement_summary(r, id, page) -%}
+**Refines:** {% if r._base_local %}[`{{ id }}`]({{ registry_page_url(id | split_id | first, page) | trim }}#{{ signal_anchor(id) }}){% else %}`{{ id }}`{% endif %}
+{%- if r._added %}
+
+**Adds:** {% for k in r._added %}{% if not loop.first %}, {% endif %}`{{ k }}`{% endfor %}
+{%- endif %}
+{%- if r._changed %}
+
+**Changes requirement level of:** {% for k in r._changed %}{% if not loop.first %}, {% endif %}`{{ k }}`{% endfor %}
+{%- endif %}
+{%- endmacro %}

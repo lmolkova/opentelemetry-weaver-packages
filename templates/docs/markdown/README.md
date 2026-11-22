@@ -26,12 +26,11 @@ You get a top-level `README.md` listing all namespaces, and per namespace:
 - `<namespace>/spans.md`, `metrics.md`, `events.md`, `entities.md` - one page per
   signal type the namespace defines. Nothing is written for signal types it
   doesn't define.
-- `<namespace>/entity-refinements.md` - entity refinements the namespace defines,
-  if any. Refinements extend upstream entity types with domain-specific identity
-  or description attributes.
-- `<namespace>/metric-refinements.md` - metric refinements the namespace defines,
-  if any. Refinements extend upstream metric definitions with additional entity
-  associations and attribute constraints.
+- `<namespace>/entity-refinements.md`, `<namespace>/metric-refinements.md` -
+  refinements the namespace defines, if any. A refinement belongs to the
+  namespace of its id (`acme.request.count` -> `acme`). Each one is titled by
+  the entity type or metric name it refines, says what it adds or changes, and
+  is linked from that entity or metric under **Known refinements**.
 
 You can generate only some signal types, or skip the registry entirely - see
 [Output toggles](#output-toggles).

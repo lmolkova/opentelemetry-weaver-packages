@@ -16,11 +16,10 @@ change. See [CONTRIBUTING.md](CONTRIBUTING.md#changelog) for details.
 - `docs/markdown`: Add the `markdown.omit_enum_table` annotation to skip the
   enum values table where a signal pins the attribute to one value.
 - `docs/markdown`: Add `entity-refinements.md` and `metric-refinements.md` pages
-  for namespaces that define refinements of upstream entities or metrics.
-  Refinements are automatically listed in the namespace `README.md` table of
-  contents under **Entity refinements** and **Metric refinements** headings.
-  Pages are emitted only when the corresponding `generate_entity_registry` /
-  `generate_metric_registry` flag is enabled.
+  for namespaces that define entity or metric refinements, listed in the
+  namespace `README.md`. Each refinement links to the signal it refines and
+  shows the attributes it adds or changes; refined entities and metrics list
+  their **Known refinements**.
 - `docs/markdown`: Fix table-of-contents anchor links for multi-word section
   headings (`Entity refinements`, `Metric refinements`) — spaces are now
   replaced with hyphens so `#entity-refinements` resolves correctly in GitHub

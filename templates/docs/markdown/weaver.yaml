@@ -50,8 +50,8 @@ templates:
         events:     (semconv_grouped_events($opts)     | map({key: .root_namespace, value: .events})   | from_entries),
         entities:   (semconv_signal("entity"; $opts) | group_by(.root_namespace) | map({key: .[0].root_namespace, value: (. | sort_by(.type))}) | from_entries),
         attributes: (semconv_grouped_attributes($opts) | map({key: .root_namespace, value: .attributes}) | from_entries),
-        metric_refinements: (.refinements.metrics | map(select(.id | startswith("refinement."))) | map(select(if $opts.exclude_deprecated then (.deprecated == null) else true end)) | map(select(if $opts.stable_only then (.stability == "stable") else true end)) | map(. + {_ns: (.id | ltrimstr("refinement.") | split(".")[0])}) | group_by(._ns) | map({key: .[0]._ns, value: .}) | from_entries),
-        entity_refinements: (.refinements.entities | map(select(.id | startswith("refinement."))) | map(select(if $opts.exclude_deprecated then (.deprecated == null) else true end)) | map(select(if $opts.stable_only then (.stability == "stable") else true end)) | map(. + {_ns: (.id | ltrimstr("refinement.") | split(".")[0])}) | group_by(._ns) | map({key: .[0]._ns, value: .}) | from_entries)
+        metric_refinements: (.refinements.metrics | map(select(.id != .name)) | map(select(if $opts.exclude_deprecated then (.deprecated == null) else true end)) | map(select(if $opts.stable_only then (.stability == "stable") else true end)) | map(. + {_ns: (.id | split(".")[0])}) | group_by(._ns) | map({key: .[0]._ns, value: .}) | from_entries),
+        entity_refinements: (.refinements.entities | map(select(.id != .type)) | map(select(if $opts.exclude_deprecated then (.deprecated == null) else true end)) | map(select(if $opts.stable_only then (.stability == "stable") else true end)) | map(. + {_ns: (.id | split(".")[0])}) | group_by(._ns) | map({key: .[0]._ns, value: .}) | from_entries)
       } as $byns
       | ([$byns.spans, $byns.metrics, $byns.events, $byns.entities, $byns.attributes, $byns.metric_refinements, $byns.entity_refinements] | map(keys) | add | unique)
       | map({
@@ -82,23 +82,44 @@ templates:
     application_mode: each
     file_name: "{{ ctx.root_namespace | kebab_case }}/spans.md"
 
+  # Each metric also gets the refinements of it, wherever they are defined. `_idx`
+  # is the refinement's position among same-named headings on its namespace's
+  # metric-refinements.md (current first, then deprecated) - the anchor's `-N`.
   - template: metric_namespace.md.j2
     when: $generate_metric_registry
     filter: |-
-      semconv_grouped_metrics({v2: true, exclude_deprecated: $exclude_deprecated, stable_only: $stable_only, exclude_root_namespace: $exclude_root_namespace})
+      ({exclude_deprecated: $exclude_deprecated, stable_only: $stable_only} as $opts
+        | .refinements.metrics
+        | map(select(.id != .name))
+        | map(select(if $opts.exclude_deprecated then (.deprecated == null) else true end))
+        | map(select(if $opts.stable_only then (.stability == "stable") else true end))
+        | map(. + {_ns: (.id | split(".")[0])})) as $refs
+      | ($refs | map(. as $r | {id, name, _ns, _idx: ([$refs[] | select(._ns == $r._ns and .name == $r.name)]
+          | (map(select(.deprecated == null)) + map(select(.deprecated != null)))
+          | to_entries | map(select(.value.id == $r.id)) | .[0].key)})) as $refs
+      | semconv_grouped_metrics({v2: true, exclude_deprecated: $exclude_deprecated, stable_only: $stable_only, exclude_root_namespace: $exclude_root_namespace})
+      | map(.metrics |= map(. as $m | . + {refinements: ($refs | map(select(.name == $m.name)) | sort_by(._ns))}))
     application_mode: each
     file_name: "{{ ctx.root_namespace | kebab_case }}/metrics.md"
 
   # Metric refinements page: one per namespace that defines refinements of upstream metrics.
+  # `_base_local` says whether the refined metric is defined in this registry (so
+  # it can be linked); `_added` / `_changed` list attribute keys the refinement
+  # adds or whose requirement level it changes, relative to that metric.
   - template: metric_refinements_namespace.md.j2
     when: $generate_metric_registry
     filter: |-
       {exclude_deprecated: $exclude_deprecated, stable_only: $stable_only} as $opts
+      | (.registry.metrics | map({key: .name, value: ((.attributes // []) | map({key: .key, value: .requirement_level}) | from_entries)}) | from_entries) as $base
       | .refinements.metrics
-      | map(select(.id | startswith("refinement.")))
+      | map(select(.id != .name))
       | map(select(if $opts.exclude_deprecated then (.deprecated == null) else true end))
       | map(select(if $opts.stable_only then (.stability == "stable") else true end))
-      | map(. + {_ns: (.id | ltrimstr("refinement.") | split(".")[0])})
+      | map(. + {_ns: (.id | split(".")[0])})
+      | map(. as $r | $base[$r.name] as $b | . + {
+          _base_local: ($b != null),
+          _added: (if $b == null then [] else [($r.attributes // [])[] | select(.key as $k | $b | has($k) | not) | .key] end),
+          _changed: (if $b == null then [] else [($r.attributes // [])[] | select(.key as $k | ($b | has($k)) and $b[$k] != .requirement_level) | .key] end)})
       | group_by(._ns)
       | map({root_namespace: .[0]._ns, metric_refinements: .})
     application_mode: each
@@ -114,22 +135,38 @@ templates:
   - template: entity_namespace.md.j2
     when: $generate_entity_registry
     filter: |-
-      semconv_signal("entity"; {v2: true, exclude_deprecated: $exclude_deprecated, stable_only: $stable_only, exclude_root_namespace: $exclude_root_namespace})
+      ({exclude_deprecated: $exclude_deprecated, stable_only: $stable_only} as $opts
+        | .refinements.entities
+        | map(select(.id != .type))
+        | map(select(if $opts.exclude_deprecated then (.deprecated == null) else true end))
+        | map(select(if $opts.stable_only then (.stability == "stable") else true end))
+        | map(. + {_ns: (.id | split(".")[0])})) as $refs
+      | ($refs | map(. as $r | {id, type, _ns, _idx: ([$refs[] | select(._ns == $r._ns and .type == $r.type)]
+          | (map(select(.deprecated == null)) + map(select(.deprecated != null)))
+          | to_entries | map(select(.value.id == $r.id)) | .[0].key)})) as $refs
+      | semconv_signal("entity"; {v2: true, exclude_deprecated: $exclude_deprecated, stable_only: $stable_only, exclude_root_namespace: $exclude_root_namespace})
       | group_by(.root_namespace)
-      | map({ root_namespace: .[0].root_namespace, entities: (. | sort_by(.type)) })
+      | map({ root_namespace: .[0].root_namespace, entities: (. | sort_by(.type) | map(. as $e | . + {refinements: ($refs | map(select(.type == $e.type)) | sort_by(._ns))})) })
     application_mode: each
     file_name: "{{ ctx.root_namespace | kebab_case }}/entities.md"
 
   # Entity refinements page: one per namespace that defines refinements of upstream entities.
+  # Same `_base_local` / `_added` / `_changed` as metric refinements, over the
+  # entity's identity and description attributes.
   - template: entity_refinements_namespace.md.j2
     when: $generate_entity_registry
     filter: |-
       {exclude_deprecated: $exclude_deprecated, stable_only: $stable_only} as $opts
+      | (.registry.entities | map({key: .type, value: (((.identity // []) + (.description // [])) | map({key: .key, value: .requirement_level}) | from_entries)}) | from_entries) as $base
       | .refinements.entities
-      | map(select(.id | startswith("refinement.")))
+      | map(select(.id != .type))
       | map(select(if $opts.exclude_deprecated then (.deprecated == null) else true end))
       | map(select(if $opts.stable_only then (.stability == "stable") else true end))
-      | map(. + {_ns: (.id | ltrimstr("refinement.") | split(".")[0])})
+      | map(. + {_ns: (.id | split(".")[0])})
+      | map(. as $r | $base[$r.type] as $b | (((.identity // []) + (.description // []))) as $attrs | . + {
+          _base_local: ($b != null),
+          _added: (if $b == null then [] else [$attrs[] | select(.key as $k | $b | has($k) | not) | .key] end),
+          _changed: (if $b == null then [] else [$attrs[] | select(.key as $k | ($b | has($k)) and $b[$k] != .requirement_level) | .key] end)})
       | group_by(._ns)
       | map({root_namespace: .[0]._ns, entity_refinements: .})
     application_mode: each
